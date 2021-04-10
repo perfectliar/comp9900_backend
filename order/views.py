@@ -3,7 +3,7 @@ from . import models
 import json
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
-from ..items import models as item_models
+from items import models as item_models
 
 
 def show_all(request):
