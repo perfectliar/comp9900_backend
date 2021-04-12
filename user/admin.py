@@ -3,7 +3,7 @@ from .models import Myuser
 
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ['id', 'username', 'email', 'password', 'user_identity']
+    list_display = ['username', 'email', 'password', 'user_identity', 'id']
 
     class Meta:
         model = Myuser

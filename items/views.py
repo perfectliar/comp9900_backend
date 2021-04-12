@@ -7,7 +7,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 
 def item_list(request):
-    data = serializers.serialize('python', models.GoodsInfo.objects.all())
+    data = serializers.serialize('python', models.ItemInfo.objects.all())
     count = len(data)
     items = []
     for i in range(count):
@@ -24,12 +24,18 @@ def item_list(request):
 
 def add_item(request):
     data = json.loads(request.body)
+    print(data)
     item_info = {'item_name': data['name'],
                  'item_price': data['price'],
                  'item_des': data['description']
                  }
-    models.GoodsInfo.objects.create(**item_info)
-    book_cate = serializers.serialize('python', models.Category.objects.filter(cag_name=data['category']))
+    new_item = models.ItemInfo.objects.create(**item_info)
+    temp = new_item.id
+    item_cate = {'item_id': new_item,
+                 'cate_id': models.Category(cag_name=data['category'])
+                 }
+
+    # models.ItemCategory.objects.get_or_create(cate_id=models.Category(cag_name=data['category']))
 
     res = {
         'success': True,
@@ -41,8 +47,8 @@ def add_item(request):
 def item_detail(request):
     data = json.loads(request.body)
     item_id = data['item_id']
-    item_info = serializers.serialize('python', models.GoodsInfo.objects.filter(id=item_id))
-    cate_info = serializers.serialize('python', models.GoodsCategory.objects.filter(good_id=item_id))
+    item_info = serializers.serialize('python', models.ItemInfo.objects.filter(id=item_id))
+    cate_info = serializers.serialize('python', models.ItemCategory.objects.filter(good_id=item_id))
     categories = []
     if cate_info:
         cate_id = []
@@ -52,7 +58,7 @@ def item_detail(request):
         if cate_name:
             for index in range(len(cate_name)):
                 categories.append(cate_name[index]['fields']['cag_name'])
-#  Mark
+    #  Mark
     if categories:
         res = {
             'data': item_info,
@@ -70,13 +76,12 @@ def item_detail(request):
     return HttpResponse(json.dumps(res), content_type='application/json')
 
 
-def all_cate():
-
+def all_cate(request):
     cate_info = serializers.serialize('python', models.Category.objects.all())
     cate_list = {}
     if cate_info:
         for index in range(len(cate_info)):
-            cate_list[cate_info[index]['fields']['cag_name']] = cate_info[index]['fields']['id']
+            cate_list[cate_info[index]['fields']['cag_name']] = cate_info[index]['pk']
 
     res = {
         'category': cate_list,

@@ -1,15 +1,15 @@
 from django.db import models
 import uuid
 
-class GoodsInfo(models.Model):  # admin and user use the same category, ID would be created by django
+class ItemInfo(models.Model):  # admin and user use the same category, ID would be created by django
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    goods_name = models.CharField(max_length=50)
-    goods_price = models.IntegerField(default=0)
-    goods_desc = models.TextField()  # description
-    # goods_img = models.ImageField(upload_to='goods')
+    item_name = models.CharField(max_length=50)
+    item_price = models.IntegerField(default=0)
+    item_des = models.TextField()  # description
+    # item_img = models.ImageField(upload_to='goods')
 
     def __str__(self):
-        return self.goods_name
+        return self.item_name
 
 class Category(models.Model):  # admin and user use the same category, ID would be created by django
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -22,10 +22,10 @@ class Category(models.Model):  # admin and user use the same category, ID would 
     # cag_css = models.CharField(max_length=20, null=True)  # front-end css
     # cag_img = models.ImageField(upload_to='cag', null=True)  # images for category
 
-class GoodsCategory(models.Model):
+class ItemCategory(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     cate_id = models.ForeignKey('Category', on_delete=models.CASCADE, default=0)
-    good_id = models.ForeignKey('GoodsInfo', on_delete=models.CASCADE, default=0)
+    item_id = models.ForeignKey('ItemInfo', on_delete=models.CASCADE, default=0)
 
 '''
 from django.db import models

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import OrderItems, OrderStatus, MyOrder
+from .models import OrderItems, MyOrder
 
 '''
 from django.db import models
@@ -18,15 +18,8 @@ class BookAdmin(admin.ModelAdmin):
 '''
 
 
-class Order_Status(admin.ModelAdmin):
-    list_display = ['id', 'order_status']
-
-    class Meta:
-        model = OrderStatus
-
-
 class My_Order(admin.ModelAdmin):
-    list_display = ['id', 'order_user_id', 'order_status', 'total_price', 'order_time']
+    list_display = ['id', 'order_user_id', 'total_price', 'order_time']
 
     class Meta:
         model = MyOrder
@@ -42,4 +35,3 @@ class Order_Items(admin.ModelAdmin):
 # admin.site.register(Book_cate)
 admin.site.register(OrderItems, Order_Items)
 admin.site.register(MyOrder, My_Order)
-admin.site.register(OrderStatus, Order_Status)

@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from django.db.backends.mysql.base import DatabaseWrapper
-import django_heroku
+#import django_heroku
 
 DatabaseWrapper.data_types['DateTimeField'] = 'datetime'  # fix for MySQL 5.5
 
@@ -161,4 +161,4 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-django_heroku.settings(locals())
+#django_heroku.settings(locals())

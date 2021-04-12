@@ -5,9 +5,10 @@ from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 
 def show_all(request):
-    data = json.loads(request.body)
-    key = data['key']
-    data = serializers.serialize('python', models.Cart.objects.filter(cart_user_id=key))
+    #data = json.loads(request.body)
+    #key = data['key']
+    #data = serializers.serialize('python', models.Cart.objects.filter(cart_user_id=key))
+    data = serializers.serialize('python', models.Cart.objects.all())
     count = len(data)
     items = []
     for i in range(count):
