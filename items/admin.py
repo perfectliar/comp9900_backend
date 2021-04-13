@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ItemInfo, Category, ItemCategory
+from .models import ItemInfo, Category, ItemCategory, ItemAuthor, Author
 
 '''
 from django.db import models
@@ -39,9 +39,22 @@ class Cate(admin.ModelAdmin):
         model = Category
 
 
-# admin.site.register(Book_cate)
+class Item_Author(admin.ModelAdmin):
+    list_display = ['item_id', 'author_id', 'id']
+
+    class Meta:
+        model = ItemAuthor
+
+
+class Authors(admin.ModelAdmin):
+    list_display = ['author_name', 'id']
+
+    class Meta:
+        model = Author
+
+
 admin.site.register(ItemInfo, Item_Info)
 admin.site.register(Category, Cate)
 admin.site.register(ItemCategory, BookCate)
-
-# admin.site.register(Book, BookAdmin)
+admin.site.register(Author, Authors)
+admin.site.register(ItemAuthor, Item_Author)

@@ -4,6 +4,7 @@ from . import models
 import json
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
+from django.contrib.sessions.backends.db import SessionStore
 
 
 def write_server(request):
@@ -36,9 +37,13 @@ def read_server(request):
         }
     else:
         key = data[0]['pk']
+        request.session['_user_key'] = key
+        print(request.session.keys())
         res = {
-            'key': key,
             'success': True,
             'message': 'Login successfully.',
+            'session': request.session['_user_key']
         }
-    return HttpResponse(json.dumps(res, cls=DjangoJSONEncoder), content_type='application/json')
+        response = HttpResponse(json.dumps(res, cls=DjangoJSONEncoder), content_type='application/json')
+        response.set_cookie('user_key', key)
+    return response

@@ -10,9 +10,13 @@ def item_list(request):
     data = serializers.serialize('python', models.ItemInfo.objects.all())
     count = len(data)
     items = []
+    item_info = {}
     for i in range(count):
-        items.append(data[i]['fields'])
-    print(type(items))
+        item_info = data[i]['fields']
+        item_info['item_key'] = data[i]['pk']
+        items.append(item_info)
+        print('\n')
+
     res = {
         'data': items,
         'success': True,
@@ -29,18 +33,35 @@ def add_item(request):
                  'item_price': data['price'],
                  'item_des': data['description']
                  }
-    new_item = models.ItemInfo.objects.create(**item_info)
-    temp = new_item.id
-    item_cate = {'item_id': new_item,
-                 'cate_id': models.Category(cag_name=data['category'])
-                 }
+    models.ItemInfo.objects.get_or_create(**item_info)
+    new_item = serializers.serialize('python', models.ItemInfo.objects.filter(**item_info))
 
-    # models.ItemCategory.objects.get_or_create(cate_id=models.Category(cag_name=data['category']))
+    cate_list = serializers.serialize('python', models.Category.objects.filter(cag_name__in=data['category']))
+    for index in range(len(cate_list)):
+        print(cate_list[index]['pk'])
+        models.ItemCategory.objects.get_or_create(item_id_id=new_item[0]['pk'], cate_id_id=cate_list[index]['pk'])
+
+    author_res = serializers.serialize('python', models.Author.objects.filter(author_name__in=data['author']))
+    author_list = []
+    for index in range(len(author_res)):
+        author_list.append(author_res[index]['fields']['author_name'])
+    print(set(data['author']))
+    print(set(author_list))
+    new_author = list(set(data['author']) - set(author_list))
+    if new_author:
+        for index in range(len(new_author)):
+            models.Author.objects.create(author_name=new_author[index])
+
+    author_list = serializers.serialize('python', models.Author.objects.filter(author_name__in=data['author']))
+    for index in range(len(author_list)):
+        print(author_list[index]['pk'])
+        models.ItemAuthor.objects.get_or_create(item_id_id=new_item[0]['pk'], author_id_id=author_list[index]['pk'])
 
     res = {
         'success': True,
         'message': 'Add a book successfully.',
     }
+
     return HttpResponse(json.dumps(res), content_type='application/json')
 
 

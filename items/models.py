@@ -27,6 +27,23 @@ class ItemCategory(models.Model):
     cate_id = models.ForeignKey('Category', on_delete=models.CASCADE, default=0)
     item_id = models.ForeignKey('ItemInfo', on_delete=models.CASCADE, default=0)
 
+
+class Author(models.Model):  # admin and user use the same category, ID would be created by django
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    author_name = models.CharField(max_length=30)  # name
+    cag_name_sample = ['Action and Adventure', 'Classics', 'Comic Book or Graphic Novel', 'Detective and Mystery',
+                       'Fantasy']
+
+    def __str__(self):
+        return self.author_name
+    # cag_css = models.CharField(max_length=20, null=True)  # front-end css
+    # cag_img = models.ImageField(upload_to='cag', null=True)  # images for category
+
+class ItemAuthor(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    author_id = models.ForeignKey('Author', on_delete=models.CASCADE, default='Unknown name')
+    item_id = models.ForeignKey('ItemInfo', on_delete=models.CASCADE, default=0)
+
 '''
 from django.db import models
 from partial_date import PartialDateField, PartialDate

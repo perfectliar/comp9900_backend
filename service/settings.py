@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'cart',
     'mylib',
     'order',
+    'cookies',
     'corsheaders',
 ]
 
@@ -54,13 +55,13 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = ('http://localhost:3000',)
 
@@ -161,4 +162,6 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-#django_heroku.settings(locals())
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
+SESSION_COOKIE_SAMESITE = None

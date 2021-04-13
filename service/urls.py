@@ -36,5 +36,5 @@ urlpatterns = [
     path('cart/show_all/', cart_views.show_all),
     path('cart/add/', cart_views.add),
     path('cart/remove/', cart_views.remove),
-    path('cart/clear/', cart_views.clear)
+    path('cart/clear/', cart_views.clear),
 ]
