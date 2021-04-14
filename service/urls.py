@@ -30,6 +30,7 @@ urlpatterns = [
     path('item/detail/', item_views.item_detail),
     path('item/add/', item_views.add_item),
     path('item/all_cate/', item_views.all_cate),
+    path('item/search/', item_views.search_item),
 
     path('order/show_all/', order_views.show_all),
 

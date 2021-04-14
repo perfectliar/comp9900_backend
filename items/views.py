@@ -111,3 +111,26 @@ def all_cate(request):
     }
 
     return HttpResponse(json.dumps(res), content_type='application/json')
+
+def search_item(request):
+    data = json.loads(request.body)
+    search_input = data['search']
+    search_result = serializers.serialize('python', models.ItemInfo.objects.filter(item_name__contains=search_input))
+
+    # The code below is same as item_list
+    count = len(search_result)
+    items = []
+    item_info = {}
+    for i in range(count):
+        item_info = search_result[i]['fields']
+        item_info['item_key'] = search_result[i]['pk']
+        items.append(item_info)
+        print('\n')
+
+    res = {
+        'data': items,
+        'success': True,
+        'message': 'Got data.',
+    }
+
+    return HttpResponse(json.dumps(res, cls=DjangoJSONEncoder), content_type='application/json')
